@@ -65,7 +65,7 @@ spec:
 Open terminal and run below command to run a Pod
 
 ```bash
-cd ~/swift_training/Lab2
+cd ~/swift_training/kubernetes/Lab2
 kubectl apply -f flask_pod.yaml
 ```
 

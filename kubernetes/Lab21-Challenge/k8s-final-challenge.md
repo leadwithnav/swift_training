@@ -65,19 +65,7 @@ node-type=database
 kubectl label nodes minikube-m02 node-type=database
 ```
 
-### Step 2 — Add affinity to MongoDB deployment:
-
-```yaml
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: node-type
-          operator: In
-          values:
-          - database
-```
+### Step 2 — Add affinity to MongoDB deployment to run it on above node:
 
 Verify MongoDB pod runs ONLY on `minikube-m02`.
 
@@ -91,15 +79,7 @@ Verify MongoDB pod runs ONLY on `minikube-m02`.
 kubectl taint nodes minikube-m02 db=true:NoSchedule
 ```
 
-### Step 2 — Add toleration in MongoDB deployment:
-
-```yaml
-tolerations:
-- key: "db"
-  operator: "Equal"
-  value: "true"
-  effect: "NoSchedule"
-```
+### Step 2 — Add toleration in MongoDB deployment to run it on minikube-m02:
 
 MongoDB must still schedule successfully.
 
@@ -126,14 +106,6 @@ minReplicas: 2
 maxReplicas: 6
 targetCPUUtilization: 50%
 ```
-
-Either use:
-
-```
-kubectl autoscale deployment node-frontend --cpu-percent=50 --min=2 --max=6
-```
-
-OR YAML.
 
 ---
 
@@ -215,24 +187,6 @@ Install:
 helm install myhelm ./myhelmchart
 ```
 
-Upgrade:
-
-```
-helm upgrade myhelm ./myhelmchart
-```
-
-Rollback:
-
-```
-helm rollback myhelm 1
-```
-
-Uninstall:
-
-```
-helm uninstall myhelm
-```
-
 ---
 
 # ✅ FINAL VALIDATION CHECKLIST
@@ -293,9 +247,6 @@ Verify:
 ```
 kubectl get hpa -n frontend
 ```
-
-HPA must scale pods under CPU load.
-
 ---
 
 ## ✔ RBAC

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: openshift-rm1-cluster
+  namespace: argocd
+  labels:
+    argocd.argoproj.io/secret-type: cluster
+type: Opaque
+stringData:
+  name: openshift-rm1
+  server: https://api.rm1.0a51.p1.openshiftapps.com:6443
+  config: |
+    {
+      "bearerToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkZYZUc1d1FpY1BJV0lfNlNjRUhRM1hHOHE0NWd0X2cxY1o0TXUwQV9lMWcifQ.eyJhdWQiOlsiaHR0cHM6Ly9vaWRjLm9wMS5vcGVuc2hpZnRhcHBzLmNvbS8yZmVnZnU5bHNnNDdpNzF0a2ozcGJsbjR0c29yZGVjNyJdLCJleHAiOjE3NjM2MjY2NDUsImlhdCI6MTc2MzYyMzA0NSwiaXNzIjoiaHR0cHM6Ly9vaWRjLm9wMS5vcGVuc2hpZnRhcHBzLmNvbS8yZmVnZnU5bHNnNDdpNzF0a2ozcGJsbjR0c29yZGVjNyIsImp0aSI6ImZiNjFhOGYwLWY5ZmItNGNhYi04ODcxLWYzOWI1ZDAzMDRkNiIsImt1YmVybmV0ZXMuaW8iOnsibmFtZXNwYWNlIjoibmF2MjIwMTYxLWRldiIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhcmdvY2QtYWNjZXNzIiwidWlkIjoiYTA4ZGE0NDAtNjE1OC00MDBmLWE0ZmItYWI5NmM5Yjc5NWYzIn19LCJuYmYiOjE3NjM2MjMwNDUsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpuYXYyMjAxNjEtZGV2OmFyZ29jZC1hY2Nlc3MifQ.Fj4H7mJJHeRY5cNKnO4XWR1W_GQfDSToHDskPo8v6yHHL9sgtTityh7H2560vH4E-LlvlAnLRF8C1MGit0bJBfMyl61PthGg9ONn5EF1eZ8Hbu6cf9FeuVcnjbkE4-IwtmZSugSJyW-AQ4hU5cQ2VfWnR2vj6ffQefiOzj8BseWwJbPEhpVRa9m6MCnEGwzUUqCI6XtmtdgDcMSVnn-jiq7myc06Suk1Lt8oDaiwrMPQreVrQiV3pt_eKJYxYjlFASTbtPAMrS4iYfvFMxMyKBRYxySL0jaW2dgtRqnFiPrTUgP5S1XYEzlB8y1nYM6GF4zyrcI1SgWK450XkCONbNnkKpyJeikAioV0u47qpGTx4l6kytJNKD7Webq2c2SKstBPQK-3SVZNjLFIPtu2sQY2jruwLTaAbaeFFIBnr71aIV4A0xcPt3DIRnyGZK3PK5Am1cs-vPAFlWXiSBIWsF-EvPe__jBZP6D-R4sz_z1wtOckCucMS5VwBDZcqR1wEmKTcJg8kqmK4aocVZlLggMROTgBjt47PbXowWWCyNxZ1-PjEC-EYiUxRPzvN_gSwZ-L_tf3fIaTkjwLbdTdFRfGlMj_uliJg5BlYH5uaf2rZgPjNmfg05kXYU3WETDsf28-51amGAYu3QerTaR-eD9NCGwDwSmt36S9Q5trPDM",
+      "tlsClientConfig": {
+        "insecure": true
+      },
+      "namespaces": ["nav220161-dev"]
+    }

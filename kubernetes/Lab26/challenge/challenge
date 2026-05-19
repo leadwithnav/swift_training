@@ -1,0 +1,5 @@
+🚀 1. Deny all ingress to MongoDB by default
+🚀 2. Allow ONLY NodeJS → MongoDB communication
+⭐ OPTIONAL: Restrict NodeJS Outbound Traffic
+
+If you want NodeJS to talk only to MongoDB and nothing else:

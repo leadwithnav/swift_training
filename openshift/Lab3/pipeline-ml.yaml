@@ -1,0 +1,75 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: technoavengers-ci-cd
+  namespace: nav220161-dev
+spec:
+  params:
+    - name: git-url
+      type: string
+    - name: image-url
+      type: string
+    - name: dockerfile-path
+      type: string
+      default: "Dockerfile"
+    - name: deploy-file
+      type: string
+      default: "k8s/deployment.yaml"
+
+  workspaces:
+    - name: shared-workspace
+
+  tasks:
+
+    # 1. Clone repository
+    - name: clone-repo
+      taskRef:
+        kind: ClusterTask
+        apiVersion: tekton.dev/v1       # <-- REQUIRED
+        name: git-clone
+      params:
+        - name: url
+          value: $(params.git-url)
+        - name: deleteExisting
+          value: "true"
+      workspaces:
+        - name: output
+          workspace: shared-workspace
+
+    # 2. Build container image
+    - name: build-image
+      runAfter: [clone-repo]
+      taskRef:
+        kind: ClusterTask
+        apiVersion: tekton.dev/v1       # <-- REQUIRED
+        name: buildah
+      params:
+        - name: IMAGE
+          value: $(params.image-url)
+        - name: DOCKERFILE
+          value: $(workspaces.shared-workspace.path)/$(params.dockerfile-path)
+        - name: CONTEXT
+          value: $(workspaces.shared-workspace.path)
+        - name: TLSVERIFY
+          value: "false"
+      workspaces:
+        - name: source
+          workspace: shared-workspace
+
+    # 3. Deploy manifests
+    - name: deploy
+      runAfter: [build-image]
+      taskRef:
+        kind: ClusterTask
+        apiVersion: tekton.dev/v1       # <-- REQUIRED
+        name: openshift-client
+      params:
+        - name: SCRIPT
+          value: |
+            echo "Applying manifests..."
+            oc apply -f $(workspaces.shared-workspace.path)/$(params.deploy-file)
+            echo "Restarting Deployment..."
+            oc rollout restart deployment/technoavengers
+      workspaces:
+        - name: manifest-dir
+          workspace: shared-workspace

@@ -1,0 +1,11 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: nodeapp-pdb
+  namespace: frontend
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: nodeapp
+      type: frontend

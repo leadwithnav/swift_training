@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: technoavengers-run
+  namespace: nav220161-dev
+spec:
+  pipelineRef:
+    name: technoavengers-ci-cd
+
+  params:
+    - name: git-url
+      value: "https://github.com/technoavengers/ci_cd_dockers.git"
+    - name: image-url
+      value: "image-registry.openshift-image-registry.svc:5000/nav220161-dev/technoavengers:latest"
+    - name: dockerfile-path
+      value: "Dockerfile"
+    - name: deploy-file
+      value: "k8s/deployment.yaml"
+
+  workspaces:
+    - name: shared-workspace
+      emptyDir: {}

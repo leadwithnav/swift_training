@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: my-test-pipeline
+  namespace: nav220161-dev
+spec:
+  tasks:
+    - name: hello
+      taskSpec:
+        steps:
+          - name: say
+            image: busybox
+            script: |
+              echo "Hello Tekton"

@@ -20,21 +20,11 @@ In this lab, you will deploy a Flask application on Kubernetes that shows a form
 ---
 
 ## ☘️ Pre-requiste : Setup K3s Cluster
-1. Stop Minikube
+1. Start Minikube
 ```bash
-minikube stop
-minikube delete
+minikube start --driver=docker --ports=30000:30000
 ```
 
-
-1. Run below to start k3s cluster
-
-```bash
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik" sh -
-sudo cp /etc/rancher/k3s/k3s.yaml $HOME/k3s.yaml
-sudo chown $USER:$USER $HOME/k3s.yaml
-export KUBECONFIG=$HOME/k3s.yaml
-```
 
 ## ☘️ Step 1: Flask App Code (`app.py`)
 
@@ -129,7 +119,7 @@ spec:
 ## ☘️ Step 3: Deploy Postgres
 
 ```bash
-cd ~/swift_training/Lab5
+cd ~/swift_training/kubernetes/Lab5
 kubectl apply -f postgres-deployment.yaml
 ```
 check pod status

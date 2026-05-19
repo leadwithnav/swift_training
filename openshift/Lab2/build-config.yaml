@@ -1,36 +1,27 @@
-kind: BuildConfig
 apiVersion: build.openshift.io/v1
+kind: BuildConfig
 metadata:
-  name: s2i-build
+  name: s2i-build-new
   namespace: nav220161-dev
-  uid: 2ff5f59c-3aa9-440f-a0b3-7e420fd60e3c
-  resourceVersion: '5261924817'
-  generation: 7
-  creationTimestamp: '2025-11-20T05:42:07Z'
 spec:
-  nodeSelector: null
   output:
     to:
       kind: ImageStreamTag
-      name: 's2i-build:latest'
-  resources: {}
-  successfulBuildsHistoryLimit: 5
-  failedBuildsHistoryLimit: 5
+      name: s2i-build:latest
+  source:
+    git:
+      ref: master
+      uri: https://github.com/openshift/ruby-ex.git
+    type: Git
   strategy:
     type: Source
     sourceStrategy:
       from:
         kind: ImageStreamTag
+        name: ruby:latest
         namespace: openshift
-        name: 'ruby:latest'
-  postCommit: {}
-  source:
-    type: Git
-    git:
-      uri: 'https://github.com/openshift/ruby-ex.git'
-      ref: master
+      env: []
   triggers:
-    - type: ImageChange
-      imageChange: {}
-    - type: ConfigChange
-  runPolicy: Serial
+  - type: ImageChange
+    imageChange: {}
+  - type: ConfigChange
