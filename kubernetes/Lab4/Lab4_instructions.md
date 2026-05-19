@@ -50,7 +50,7 @@ spec:
 ## ☘️ Step 2: Deploy the First Version (v1)
 
 ```bash
-cd ~/swift_training/Lab4
+cd ~/swift_training/kubernetes/Lab4
 kubectl apply -f flask_deployment.yaml
 ```
 
