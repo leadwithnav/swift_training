@@ -18,10 +18,10 @@ In this lab, participants will deploy MongoDB as a StatefulSet in Kubernetes, en
 
 ---
 
-## ☘️ Pre-requisite: Run K3s cluster
+## ☘️ Pre-requisite: Run Minikube cluster
 
 ```bash
-export KUBECONFIG=$HOME/k3s.yaml
+minikube start --driver=docker --ports=30000:30000
 ```
 
 Verify cluster

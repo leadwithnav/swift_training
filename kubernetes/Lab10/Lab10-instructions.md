@@ -34,12 +34,9 @@ A Helm chart is a collection of YAML files that define a related set of Kubernet
 - Parameterized templates via `values.yaml`
 
 ---
-## ☘️ Pre-requiste : Setup K3s Cluster
+## ☘️ Pre-requiste : Setup Minikube Cluster
 ```bash
-cd ~/swift_training/Lab10
-chmod 777 runk3s.sh
-./runk3s.sh
-export KUBECONFIG=$HOME/k3s.yaml
+minikube start --driver=docker --ports=30000:30000
 ```
 
 check your nodes

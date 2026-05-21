@@ -10,21 +10,11 @@ You will:
 ---
 
 ## ☘️ Pre-requiste : Setup K3s Cluster
-1. Stop Minikube
+1. Start Minikube
 ```bash
-minikube stop
-minikube delete
+minikube start --driver=docker --ports=30000:30000
 ```
 
-
-1. Run below to start k3s cluster
-
-```bash
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik" sh -
-sudo cp /etc/rancher/k3s/k3s.yaml $HOME/k3s.yaml
-sudo chown $USER:$USER $HOME/k3s.yaml
-export KUBECONFIG=$HOME/k3s.yaml
-```
 
 ## 🚀 Step-by-Step Guide
 

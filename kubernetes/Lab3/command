@@ -1,0 +1,8 @@
+aws ec2 create-tags \
+  --resources subnet-0f7b0cb8f59870489 subnet-01206c5642b859136 subnet-03df7252bde55f69f \
+  --tags Key=kubernetes.io/cluster/mycluster,Value=shared
+
+
+
+curl -X POST http://18.204.65.97:30000/submit \
+     --data "username=testuser&age=30"

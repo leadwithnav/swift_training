@@ -1,7 +1,7 @@
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
-  name: flask-replicaset
+  name: flask-deployment
   labels:
     app: flask
 spec:

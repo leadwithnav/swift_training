@@ -3,7 +3,7 @@
 ## Step-by-step Instructions
 
 ## ☘️ Pre-requiste : Setup K3s Cluster
-1. Stop Minikube
+1. Start Minikube
 ```bash
 minikube start --driver=docker --ports=30000:30000
 ```
