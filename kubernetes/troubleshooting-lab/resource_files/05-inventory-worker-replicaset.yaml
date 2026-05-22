@@ -1,0 +1,20 @@
+# BUG: Image doesn't exist (busybox:1.99.9-typo)
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: inventory-worker
+  namespace: break-fix-lab
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: inventory-worker
+  template:
+    metadata:
+      labels:
+        app: inventory-worker
+    spec:
+      containers:
+      - name: worker
+        image: busybox:1.99.9-typo 
+        command: ["/bin/sh", "-c", "sleep 3600"]

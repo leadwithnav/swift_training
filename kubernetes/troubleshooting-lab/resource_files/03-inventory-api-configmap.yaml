@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inventory-api-config
+  namespace: break-fix-lab
+data:
+  DB_HOST: "inventory-db-svc"
