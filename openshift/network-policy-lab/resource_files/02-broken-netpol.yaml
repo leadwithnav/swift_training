@@ -1,0 +1,47 @@
+# 1. Default Deny All Ingress
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+# 2. Allow Frontend to access Backend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-backend
+spec:
+  podSelector:
+    matchLabels:
+      app: backend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          tier: frontend # BUG 1: The frontend pod has label app:frontend, not tier:frontend
+    ports:
+    - port: 80
+      protocol: TCP
+---
+# 3. Allow Backend to access Database
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-database
+spec:
+  podSelector:
+    matchLabels:
+      app: database
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector: {} # BUG 2: Allows ingress from ANY pod in ANY namespace, instead of just app:backend
+    ports:
+    - port: 80
+      protocol: TCP
