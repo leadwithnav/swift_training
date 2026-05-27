@@ -145,3 +145,67 @@ spec:
     ports:
     - port: 80
       protocol: TCP
+---
+# ROUTE - Issue 6: Route points to wrong port
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: frontend
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: frontend-route
+spec:
+  to:
+    kind: Service
+    name: frontend
+  port:
+    targetPort: 8080 # BUG 6: Frontend service only exposes 80!
+---
+# RBAC - Issue 7: RoleBinding typo prevents job from reading configmaps
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: migrator-sa
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: migrator-role
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: migrator-binding
+subjects:
+- kind: ServiceAccount
+  name: migrator-serviceaccount # BUG 7: Typo, should be migrator-sa
+roleRef:
+  kind: Role
+  name: migrator-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrator
+spec:
+  template:
+    spec:
+      serviceAccountName: migrator-sa
+      containers:
+      - name: migrator
+        image: bitnami/kubectl:latest
+        command: ["kubectl", "get", "configmaps"]
+      restartPolicy: Never

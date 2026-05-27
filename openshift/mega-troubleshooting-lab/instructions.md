@@ -9,6 +9,7 @@ Your students will act as the troubleshooting team. You will run commands togeth
 - **Frontend Deployment**: A web server that should run 2 replicas.
 - **Backend Deployment**: An API that should automatically scale based on CPU usage using an HPA.
 - **Database Deployment**: A database that should run 2 replicas, but must NEVER run on the same node for high availability (Anti-Affinity).
+- **Database Migrator Job**: A one-off job that runs to migrate the database and needs to read configmaps.
 
 ## Reported Issues to Investigate
 1. **Frontend Pending**: The frontend pods are not starting. They seem to be stuck in a `Pending` state.
@@ -16,6 +17,8 @@ Your students will act as the troubleshooting team. You will run commands togeth
 3. **Broken HPA**: The Horizontal Pod Autoscaler for the backend shows `<unknown>/50%` for CPU utilization and refuses to scale.
 4. **Database Anti-Affinity**: Only one database pod is running. The second one is stuck in `Pending`.
 5. **Network Connectivity**: Once you finally get the frontend pods running, they cannot communicate with the backend.
+6. **Route Issue**: The frontend Route is returning a "503 Application is not available" error.
+7. **RBAC Failure**: The `db-migrator` job is failing because it doesn't have permissions to list configmaps.
 
 ## Objective
 Work together to use `oc` commands to diagnose why each of these issues is occurring, and then edit the resources to fix them!

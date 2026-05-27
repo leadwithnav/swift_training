@@ -13,6 +13,7 @@ Check the status of everything:
 oc get all
 oc get hpa
 oc get pdb
+oc get route
 ```
 
 ---
@@ -85,8 +86,6 @@ oc edit deployment database
 ```
 Change `topologyKey: "topology.kubernetes.io/non-existent-zone"` to `topologyKey: "kubernetes.io/hostname"`.
 
-*(Instructor Note: In the Developer Sandbox, there might only be 1 worker node available to your project. If so, the second pod will STILL stay pending because 2 pods cannot be scheduled on 1 node due to the anti-affinity rule. This is a great teaching moment about physical cluster constraints!)*
-
 ---
 
 ## Issue 5: Frontend cannot reach Backend (Network Policies)
@@ -105,4 +104,39 @@ oc edit networkpolicy backend-policy
 ```
 Change `app: wrong-frontend` to `app: frontend`.
 
-Test the connection again from the frontend pod, and it will immediately succeed!
+---
+
+## Issue 6: Route returns 503 Error
+**Troubleshooting steps:**
+1. Get the route URL: `oc get route frontend-route`
+2. Try to access it via curl or a browser: `curl http://<route-url>`
+3. You will get an "Application is not available" (503) error.
+4. Check the route configuration: `oc describe route frontend-route`
+5. Check the service configuration: `oc describe svc frontend`
+6. Notice that the Service exposes port `80`, but the Route is trying to send traffic to `targetPort: 8080`.
+
+**The Fix:**
+Edit the route:
+```bash
+oc edit route frontend-route
+```
+Change `targetPort: 8080` to `targetPort: 80`. The application will immediately be reachable!
+
+---
+
+## Issue 7: DB Migrator Job fails due to RBAC
+**Troubleshooting steps:**
+1. Check the jobs and pods: `oc get pods`
+2. Notice the `db-migrator-xxx` pod has a status of `Error`.
+3. Check the logs of the pod: `oc logs <db-migrator-pod-name>`
+4. You will see an error: `Error from server (Forbidden): configmaps is forbidden: User "system:serviceaccount:<your-project>:migrator-sa" cannot list resource "configmaps"`.
+5. Check the RoleBinding: `oc get rolebinding migrator-binding -o yaml`
+6. Notice that the subject ServiceAccount is named `migrator-serviceaccount` but the actual ServiceAccount used by the job is `migrator-sa`.
+
+**The Fix:**
+Edit the RoleBinding:
+```bash
+oc edit rolebinding migrator-binding
+```
+Change the `name` under `subjects` from `migrator-serviceaccount` to `migrator-sa`.
+Wait for the job to retry (or delete and recreate it), and it will succeed!
