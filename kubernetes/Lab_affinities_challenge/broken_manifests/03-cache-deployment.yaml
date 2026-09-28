@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-deployment
+  labels:
+    app: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+    spec:
+      # BROKEN: Pod affinity looks for label app=backend-service, but actual backend pod is labeled app=backend
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - backend-service
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: cache
+        image: redis:alpine
+        ports:
+        - containerPort: 6379

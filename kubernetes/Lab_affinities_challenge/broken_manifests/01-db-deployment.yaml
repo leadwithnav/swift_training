@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  labels:
+    app: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      # BROKEN: Node affinity targets minikube-m03 (tier=db-node), BUT node has taint dedicated=db:NoSchedule
+      # MISSING: Toleration for taint dedicated=db:NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: tier
+                operator: In
+                values:
+                - db-node
+      containers:
+      - name: db
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
