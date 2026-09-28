@@ -1,26 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myweb-app
+  name: web
+  namespace: production
+  labels:
+    app: web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: low-resource-app
+      app: web
   template:
     metadata:
       labels:
-        app: low-resource-app
+        app: web
     spec:
       containers:
-      - name: app
-        image: nginx
+      - name: web
+        image: registry.k8s.io/hpa-example
         ports:
         - containerPort: 80
         resources:
           requests:
-            cpu: "10m"
-            memory: "32Mi"
+            cpu: "100m"
+            memory: "128Mi"
           limits:
-            cpu: "50m"
-            memory: "64Mi"
+            cpu: "200m"
+            memory: "256Mi"

@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api-pdb
+  namespace: production
+spec:
+  minAvailable: 3 # BROKEN: 3 replicas with minAvailable: 3 leaves 0 allowed disruptions!
+  selector:
+    matchLabels:
+      app: api

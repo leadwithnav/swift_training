@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api-pdb
+  namespace: production
+spec:
+  minAvailable: 2 # FIXED: Allows 1 eviction during node drain so kubectl drain succeeds
+  selector:
+    matchLabels:
+      app: api
