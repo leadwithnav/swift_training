@@ -1,29 +1,22 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: minio
+  name: nginx
 spec:
-  serviceName: "minio-service"
   replicas: 2
   selector:
     matchLabels:
-      app: minio
+      app: nginx
   template:
     metadata:
       labels:
-        app: minio
+        app: nginx
     spec:
       containers:
-      - name: minio
-        image: minio/minio
-        args:
-          - server
-          - /data
+      - name: nginx
+        image: nginx
         ports:
-          - containerPort: 9000
-        volumeMounts:
-          - name: minio-storage
-            mountPath: /data
+        - containerPort: 80
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -40,13 +33,5 @@ spec:
               - key: app
                 operator: In
                 values:
-                - minio
+                - nginx
             topologyKey: "kubernetes.io/hostname"
-  volumeClaimTemplates:
-  - metadata:
-      name: minio-storage
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi

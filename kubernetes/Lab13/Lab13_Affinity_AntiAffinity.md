@@ -1,5 +1,4 @@
-
-# ✅ Lab 14: Managing Pod Placement Using Affinity and Anti-Affinity in Kubernetes
+# ✅ Lab 13: Managing Pod Placement Using Affinity and Anti-Affinity in Kubernetes
 
 🕒 **Estimated Time**: 20 minutes
 
@@ -7,7 +6,7 @@
 
 ## 🎯 Lab Overview
 
-This lab will help you understand how to configure **node affinity** and **pod affinity/anti-affinity** to control the placement of MinIO pods on specific nodes or to avoid scheduling them together based on labels.
+This lab will help you understand how to configure **node affinity** and **pod affinity/anti-affinity** to control the placement of Nginx pods on specific nodes or to avoid scheduling them together based on labels.
 
 ---
 
@@ -38,9 +37,9 @@ kubectl label nodes minikube node-type=storage-node
 
 ---
 
-## ☘️ Step 4: MinIO StatefulSet with Node Affinity
+## ☘️ Step 4: Nginx Deployment with Node Affinity
 
-Explore the YAML file `minio_statefulset_with_node_affinity.yaml` located in Lab13 folder and Focus on section representing affinity
+Explore the YAML file `nginx_deployment_with_node_affinity.yaml` located in Lab13 folder and Focus on section representing affinity
 
 ```yaml
  affinity:
@@ -54,16 +53,14 @@ Explore the YAML file `minio_statefulset_with_node_affinity.yaml` located in Lab
                 - storage-node  # Use the node label you applied earlier
 ```
 
-
-
-Apply the StatefulSet:
+Apply the Deployment:
 
 ```bash
 cd ~/swift_training/Lab13
-kubectl apply -f minio_statefulset_with_node_affinity.yaml
+kubectl apply -f nginx_deployment_with_node_affinity.yaml
 ```
 
-This YAML enforces scheduling MinIO pods **only on nodes labeled** `node-type=storage-node`.
+This YAML enforces scheduling Nginx pods **only on nodes labeled** `node-type=storage-node`.
 
 ---
 
@@ -94,7 +91,7 @@ kubectl label nodes minikube-m02 node-type=storage-node
 
 ## ☘️ Step 7: Add Pod Anti-Affinity
 
-Explore the YAML `minio_statefulset_with_node_affinity_pod_antiaffinity.yaml` with pod anti-affinity and focus on section that defines pod anti-affinity:
+Explore the YAML `nginx_deployment_with_node_affinity_pod_antiaffinity.yaml` with pod anti-affinity and focus on section that defines pod anti-affinity:
 
 ```yaml
 podAntiAffinity:
@@ -104,28 +101,27 @@ podAntiAffinity:
               - key: app
                 operator: In
                 values:
-                - minio
+                - nginx
             topologyKey: "kubernetes.io/hostname"
 ```
 
-## ☘️ Step 8: Delete the existing StatefulSet:
-
+## ☘️ Step 8: Delete the existing Deployment
 
 ```bash
-kubectl delete statefulset minio
+kubectl delete deployment nginx
 ```
 
-## ☘️ Step 8: Create new StatefulSet:
+## ☘️ Step 9: Create new Deployment
 
-New statefulSet has affinity for node but it also has pod anit-affinity
+New deployment has affinity for node but it also has pod anti-affinity
 
 ```bash
-kubectl apply -f minio_statefulset_with_node_affinity_pod_antiaffinity.yaml
+kubectl apply -f nginx_deployment_with_node_affinity_pod_antiaffinity.yaml
 ```
 
 ---
 
-## ☘️ Step 8: Check Pod again
+## ☘️ Step 10: Check Pod again
 
 ```bash
 kubectl get pod -o wide
@@ -137,19 +133,19 @@ Check for below
 - Enforced during scheduling time
 
 ### 🔹 Pod Anti-Affinity
-- Ensures **MinIO pods (app=minio)** are not scheduled on the same node
+- Ensures **Nginx pods (app=nginx)** are not scheduled on the same node
 - Controlled using `topologyKey: kubernetes.io/hostname`
 - Spreads pods across available nodes
 
 
-## ☘️ Step 9: Remove Labels from all machine
+## ☘️ Step 11: Remove Labels from all machine
 
 ```bash
 kubectl label nodes minikube node-type-
 kubectl label nodes minikube-m02 node-type-
 ```
 
-## ☘️ Step 10: Cleanup
+## ☘️ Step 12: Cleanup
 ```bash
 cd ~/swift_training/Lab13
 kubectl delete -f .
