@@ -36,7 +36,7 @@ kubectl config set-context --current --namespace=lab9b
 Inspect `mongodb-headless-service.yaml` and `mongodb-statefulset.yaml`:
 
 ```bash
-cd ~/swift_training/Lab9B
+cd ~/swift_training/kubernetes/Lab9B
 kubectl apply -f mongodb-headless-service.yaml
 kubectl apply -f mongodb-service.yaml
 kubectl apply -f mongodb-statefulset.yaml
