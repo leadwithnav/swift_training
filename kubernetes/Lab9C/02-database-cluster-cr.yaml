@@ -1,9 +1,0 @@
-apiVersion: database.example.com/v1alpha1
-kind: MongoCluster
-metadata:
-  name: production-mongo
-spec:
-  members: 3
-  version: "5.0"
-  storageSize: "2Gi"
-  autoFailover: true
