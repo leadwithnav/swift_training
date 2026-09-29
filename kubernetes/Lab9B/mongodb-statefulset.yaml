@@ -3,33 +3,29 @@ kind: StatefulSet
 metadata:
   name: mongodb
 spec:
-  serviceName: "mongodb-h"
-  replicas: 2
+  serviceName: "mongodb-headless"
+  replicas: 3
   selector:
     matchLabels:
-      type: backend
+      app: mongo-sts
   template:
     metadata:
-      name: mongodb-pod
       labels:
-        type: backend
+        app: mongo-sts
     spec:
       containers:
       - name: mongo
-        image: mongo
+        image: mongo:5.0
         ports:
         - containerPort: 27017
         volumeMounts:
-        - mountPath: /data/db
-          name: mongo-pvc2
+        - name: data
+          mountPath: /data/db
   volumeClaimTemplates:
   - metadata:
-      name: mongo-pvc2
+      name: data
     spec:
-      accessModes:
-        - ReadWriteOnce
+      accessModes: ["ReadWriteOnce"]
       resources:
         requests:
-          storage: 500Mi
-
-
+          storage: 1Gi
