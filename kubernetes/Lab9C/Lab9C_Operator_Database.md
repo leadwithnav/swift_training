@@ -50,7 +50,7 @@ While a **StatefulSet** creates pods and volumes, an **Operator** handles Day-2 
 Inspect `01-crd-and-operator.yaml`:
 
 ```bash
-cd ~/swift_training/Lab9C
+cd ~/swift_training/kubernetes/Lab9C
 kubectl apply -f 01-crd-and-operator.yaml
 ```
 
