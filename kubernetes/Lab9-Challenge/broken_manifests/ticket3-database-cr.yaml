@@ -1,9 +1,0 @@
-apiVersion: database.example.com/v1 # BROKEN: Invalid apiVersion! Installed CRD version is v1alpha1
-kind: MongoCluster
-metadata:
-  name: prod-mongo-cluster
-  namespace: lab9-challenge
-spec:
-  replicaCount: 3 # BROKEN: Unknown field! Schema defines 'members', not 'replicaCount'
-  version: "5.0"
-  storageSize: "2Gi"
