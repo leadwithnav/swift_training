@@ -1,4 +1,14 @@
 # Production MongoDB Community Operator Custom Resource Example
+apiVersion: v1
+kind: Secret
+metadata:
+  name: admin-user-password
+  namespace: mongodb
+type: Opaque
+stringData:
+  password: my-password-123
+---
+
 apiVersion: mongodbcommunity.mongodb.com/v1
 kind: MongoDBCommunity
 metadata:
