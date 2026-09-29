@@ -93,18 +93,15 @@ Each pod gets its **own dedicated PVC** bound strictly to its ordinal index (`0`
 Test stable DNS resolution using the Headless Service (`clusterIP: None`):
 
 ```bash
-kubectl exec -it mongodb-0 -- nslookup mongodb-headless
+kubectl run dns-test \
+  --image=busybox:1.36 \
+  --restart=Never \
+  --rm -it \
+  -- nslookup mongodb-0.mongodb-headless.default.svc.cluster.local
 ```
 
 *Observation*: Headless DNS returns the individual IP addresses of all underlying pods.
 
-Test pod-specific DNS addressing:
-
-```bash
-kubectl exec -it mongodb-0 -- nslookup mongodb-1.mongodb-headless.lab9b.svc.cluster.local
-```
-
-Even if `mongodb-1` crashes and restarts on a different node, its hostname **`mongodb-1.mongodb-headless.lab9b.svc.cluster.local`** remains identical!
 
 ---
 
