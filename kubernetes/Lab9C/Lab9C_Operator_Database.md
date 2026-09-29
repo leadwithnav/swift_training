@@ -131,7 +131,7 @@ spec:
 Apply the Custom Resource:
 
 ```bash
-cd ~/swift_training/Lab9C
+cd ~/swift_training/kubernetes/Lab9C
 kubectl apply -f mongodb-community-cr.yaml
 ```
 
